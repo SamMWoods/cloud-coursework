@@ -1,7 +1,7 @@
 const amqp = require('amqplib/callback_api');
 const { AsyncResource } = require('async_hooks');
-// const CONN_URL = 'amqps://auerqbem:TPEwUg1r2MJ_jXFfAx6neKIz4v1ZNvD4@rattlesnake.rmq.cloudamqp.com/auerqbem';
-const CONN_URL = 'amqp://student:COMP30231@152.71.155.95';
+const CONN_URL = 'amqps://nxwlepfx:4E8Stppg8N5-UhepP2PuTCidUTn9hxy8@crow.rmq.cloudamqp.com/nxwlepfx';
+// const CONN_URL = 'amqp://student:COMP30231@152.71.155.95';
 const fsp = require('fs').promises;
 const fs = require('fs').promises;
 const axios = require('axios')
