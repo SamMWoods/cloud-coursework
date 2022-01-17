@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+<body>
+<style>
+button#RefreshIntentTableBtn{
+    float: right;
+}
+button#RefreshOfferTableBtn {
+    float: right;
+}
+
+button#JoinTrip {
+    margin-right: 0.25rem!important;
+}
+
+.btn-light {
+    color: #000;
+    background-color: #f8f9fa !important;
+    border-color: #f8f9fa;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #0d6efd !important;
+    border-color: #0d6efd;
+}
+
+.col-sm.r {
+    padding-right: 0px !important;
+}
+
+.col-sm.l {
+    padding-left: 0px !important;
+}
+</style>
+<div class="container mt-5">
+    <div class="row mb-3">
+        <div class="col-sm r">
+            <label>Your ID:</label>
+            <label id="displayUserID">Loading...</label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6"> 
+            <form id="locationForm">              
+                <div class="row">
+                    <div class="col-sm">
+                        <input class="form-control" id="locationInput" placeholder="Enter Country">
+                    </div>
+                    <div class="col-sm">
+                        <button type="submit" class="btn btn-primary">Submit</button>  
+                    </div>
+                </div>  
+            </form>              
+        </div>
+        <div class="col-md-6">
+            <button type="button" id="RefreshOfferTableBtn" class="float-right btn btn-primary">Refresh Offers</button>
+        </div>
+    </div>
+    <h1 class="mt-3 mb-3">Trips</h1>
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Trip ID</th>
+            <th scope="col">City Name</th>
+            <th scope="col">Max Temp</th>
+            <th scope="col">Min Temp</th>
+            <th scope="col">Forecast</th>
+            <th scope="col">Date</th>
+            <th scope="col">Trip creator</th>
+            <th scope="col">Join Trip</th>
+          </tr>
+        </thead>
+        <tbody id="JoinTrip">
+
+        </tbody>
+    </table>
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+
+    <hr>
+    <div class="row">
+        <div class="col-md-6">
+            <h1 class="col-md-12">Joined Trip</h1>
+        </div>
+        <div class="col-md-6">
+            <button type="button" id="RefreshIntentTableBtn" class="float-right btn btn-primary">Refresh Intent</button>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Trip ID</th>
+            <th scope="col">Trip Creator ID</th>
+            <th scope="col">User Going</th>
+          </tr>
+        </thead>
+        <tbody id="JoinIntent">
+
+        </tbody>
+    </table>
+
+    <script>
+        var offerData
+        var weatherData
+        var intentData
+        var coordsData
+        var userIdData
+        var UserIDGlobal
+        var PassPostID = new Array()
+
+
+        async function getJSON(path){
+            return fetch(`/${path}`)
+                .then((response)=>response.json())
+                .then((responseJson)=>{return responseJson});
+        }
+
+        async function getLocationName(latitude, longitude, index){
+            await APICall()
+            let city
+            coordsData.coords.map((coord => {
+                // console.log(coord.cityName)
+                // console.log(parseInt(coord.lat), parseInt(latitude), parseInt(coord.lon), parseInt(longitude))
+                if(parseInt(coord.lat) == parseInt(latitude) && parseInt(coord.lon) == parseInt(longitude)){
+                    city = coord.cityName
+                }
+            }))
+            if(city == undefined){
+                city = 'Lat: ' + parseInt(latitude).toFixed(2) + ' Lon: ' + parseInt(longitude).toFixed(2)
+            }
+
+            return city
+        }
+
+        async function getWeather(locationNameText, value){
+            var temp = undefined
+
+            if(weatherData[locationNameText]){
+                if(value === "max"){
+                    temp = weatherData[locationNameText].data.weather[0].maxtempC + '°C'
+                }
+                else if(value === "min"){
+                    temp = weatherData[locationNameText].data.weather[0].mintempC + '°C'
+                }else if(value === "forecast"){
+                    temp = weatherData[locationNameText].data.current_condition[0].weatherDesc[0].value
+                }
+            }
+
+            else if (value === "max" && temp == undefined) {
+                    temp = 'Max Temp not found'
+            }
+            else if (value === "min" && temp === undefined) {
+                temp = 'Min Temp not found'
+            }
+            else if (value === "forecast" && temp === undefined) {
+                temp = 'forecast not found'
+            }
+
+            return temp
+        }
+
+        async function APICall(){
+            await sleep(500)
+            offerData = await this.getJSON("offers");  // command waits until completion
+            weatherData = await this.getJSON("weather");  // command waits until completion
+            intentData = await this.getJSON("intent");  // command waits until completion
+            coordsData = await this.getJSON("coords"); 
+            userIdData = await this.getJSON("userid"); 
+
+        }
+
+        async function offerTable() {    
+            await sleep(500)
+            offerData = await this.getJSON("offers");  // command waits until completion         
+            document.getElementById("JoinTrip").innerHTML = "";
+
+            offerData.offers.map(async (offer, index) => {
+                var trElement = document.createElement("tr");
+                trElement.setAttribute("id", `trJoinTrip${index}`);
+                if(offer.creatorUserId === UserIDGlobal.toString()){
+                    trElement.setAttribute("class", 'bg-light text-black');
+                }
+                document.getElementById("JoinTrip").appendChild(trElement);
+
+                //tripID
+                var tripIDCell = document.createElement("td");
+                if(offer.creatorUserId === UserIDGlobal.toString()){
+                    var tripIDText = document.createTextNode('User Trip');
+                }
+                else{
+                    var tripIDText = document.createTextNode(offer.tripId);
+                }
+                tripIDCell.appendChild(tripIDText);
+
+
+                //Location Name
+                var locationNameCell = document.createElement("td");
+                var locationNameText = document.createTextNode(await getLocationName(offer.latitude, offer.longitude, index));
+                var cityName = await getLocationName(offer.latitude, offer.longitude, index);
+                locationNameCell.appendChild(locationNameText);
+
+                //Weather
+                var MaxTempCell = document.createElement("td");
+                var MaxTempText = document.createTextNode(await getWeather(cityName, "min"));
+                MaxTempCell.appendChild(MaxTempText);
+
+                var minTempCell = document.createElement("td");
+                var MinTempText = document.createTextNode(await getWeather(cityName, "max"));
+                minTempCell.appendChild(MinTempText);
+
+                var forecastCell = document.createElement("td");
+                var forecastText = document.createTextNode(await getWeather(cityName, "forecast"));
+                forecastCell.appendChild(forecastText);
+
+                //Date
+                var dateCell = document.createElement("td");
+                var dateText = document.createTextNode(offer.date);
+                dateCell.appendChild(dateText);
+
+                //Trip Creator
+                var tripCreatorCell = document.createElement("td");
+                var tripCreatorText = document.createTextNode(offer.creatorUserId);
+                tripCreatorCell.appendChild(tripCreatorText);
+
+                //Trip button
+                var tripBTN = document.createElement("BUTTON");
+                tripBTN.setAttribute('type', 'button');  
+                tripBTN.setAttribute('ID', 'JoinTrip');  
+                tripBTN.setAttribute('tripid', offer.tripId);  
+                tripBTN.setAttribute("tripcreator", offer.creatorUserId);  
+                tripBTN.setAttribute('class', 'btn btn-primary mt-1 mb-1 mr-1');  
+                // tripBTN.setAttribute('onclick','post();');
+                tripBTN.textContent = 'Join Trip';
+
+
+                //tripID
+                trElement.appendChild(tripIDCell);
+
+                //Location Name
+                trElement.appendChild(locationNameCell);
+
+                //weather
+                trElement.appendChild(MaxTempCell);
+                
+                trElement.appendChild(minTempCell);
+
+                trElement.appendChild(forecastCell);
+
+                //Date
+                trElement.appendChild(dateCell);
+
+                //Trip Creator
+                trElement.appendChild(tripCreatorCell);
+
+
+                //Trip Creator
+                trElement.appendChild(tripBTN);
+                
+            })
+        }
+
+        async function intentTable() {    
+            await sleep(500)
+            intentData = await this.getJSON("intent");  // command waits until completion         
+            document.getElementById("JoinIntent").innerHTML = "";
+
+            var PassID = new Array()
+
+            intentData.intent.map(async (intent, index) => {
+                var userGoing = 0
+                intentData.intent.map(async (secondIntent, index) => {
+                    if(intent.tripId === secondIntent.tripId){
+                        userGoing++
+                    }
+                })
+
+
+                var count = PassID.indexOf(intent.tripId)
+                        
+                if(count === -1){
+                    PassID.push(intent.tripId) 
+                    var trIntentElement = document.createElement("tr");
+                    trIntentElement.setAttribute("id", `trJoinIntent${index}`);
+                    document.getElementById("JoinIntent").appendChild(trIntentElement);
+
+                    //intent tripID
+                    var IntentIDCell = document.createElement("td");
+                    var intentIDText = document.createTextNode(intent.tripId);
+                    IntentIDCell.appendChild(intentIDText);
+
+
+                    //intent trip creator
+                    var IntentCreatorIDCell = document.createElement("td");
+                    var intentCreatorIDText = document.createTextNode(intent.tripCreatorUserId);
+                    IntentCreatorIDCell.appendChild(intentCreatorIDText);
+
+                    //intent trip creator
+                    var IntentGroupCell = document.createElement("td");
+                    var intentGroupText = document.createTextNode(userGoing);
+                    IntentGroupCell.appendChild(intentGroupText);
+
+                    //intent User going
+
+                    //tripID
+                    trIntentElement.appendChild(IntentIDCell);
+
+                    //intent trip creator
+                    trIntentElement.appendChild(IntentCreatorIDCell);
+                    
+                    //Group
+                    trIntentElement.appendChild(IntentGroupCell);
+                }else if (count === 0){
+                    return
+                }
+            })
+        }
+
+        async function Events(){
+            
+            document.getElementById("RefreshIntentTableBtn").addEventListener("click", () => refreshItent(), false);
+
+            document.getElementById("RefreshOfferTableBtn").addEventListener("click", () => refreshOffer(), false);
+
+            document.getElementById('locationForm').addEventListener('submit', async function(e){
+                e.preventDefault()
+
+                const locationInput = document.getElementById("locationInput").value;
+  
+                await fetch('/schema', {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        "creatorUserId": UserIDGlobal,
+                        "longitude": 1,
+                        "latitude": 1,
+                        "date": 1,
+                        "locationInput": locationInput,
+                        "Exchange" : 'TRAVEL_OFFERS'
+                    })
+                        
+                });
+            })
+
+            document.getElementById('JoinTrip').addEventListener('click', async function(e){
+                e.preventDefault()
+
+                // console.log('clicked', e)
+                const tripID = e.target.getAttribute('tripid');
+                const tripCreator = e.target.getAttribute('tripcreator');
+
+                if(tripID && tripCreator !== null){
+
+                    
+                    var PassPostCount = PassPostID.indexOf(tripID)
+                    if(PassPostCount === -1){
+                        PassPostID.push(tripID)  
+                        await fetch('/schema', {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            "messageId": '1',
+                            "tripId": tripID,
+                            "tripCreatorUserId": tripCreator,
+                            "userId": UserIDGlobal,
+                            "Exchange" : 'TRAVEL_INTENT'
+                        })
+                            
+                    });
+                    refreshItent()
+                } else if (PassPostCount === 0){
+                    alert('Already Joined Trip')
+                }
+                }
+            })
+
+        }
+
+        async function refreshOffer(){
+            document.getElementById("JoinTrip").innerHTML = ""
+            await sleep(500)
+            offerTable()
+        }
+
+        async function refreshItent(){
+            await sleep(500)
+            intentTable()
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve,ms))
+        }
+
+        async function userID(){
+            document.getElementById('displayUserID').innerHTML = userIdData.userID
+            UserIDGlobal = userIdData.userID
+        }
+ 
+        async function start(){
+            await APICall()
+            await userID()
+            await offerTable() 
+            await intentTable()
+            await Events()
+        }
+
+        start()
+    </script>
+</body>
+</html>

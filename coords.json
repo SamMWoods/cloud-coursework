@@ -1,0 +1,94 @@
+{
+  "coords": [
+    {
+      "cityName": "america",
+      "lon": "5.9799001",
+      "lat": "51.4371483"
+    },
+    {
+      "cityName": "Brazil",
+      "lon": "-87.1250154",
+      "lat": "39.523652"
+    },
+    {
+      "cityName": "Rome",
+      "lon": "12.4829321",
+      "lat": "41.8933203"
+    },
+    {
+      "cityName": "London",
+      "lon": "-0.1276474",
+      "lat": "51.5073219"
+    },
+    {
+      "cityName": "Poland",
+      "lon": "-80.614795",
+      "lat": "41.024226"
+    },
+    {
+      "cityName": "gmina Chodów",
+      "lon": "19.025356193561215",
+      "lat": "52.25224715"
+    },
+    {
+      "cityName": "gmina Chodów",
+      "lon": "19.025356193561215",
+      "lat": "52.25224715"
+    },
+    {
+      "cityName": "gmina Chodów",
+      "lon": "19.025356193561215",
+      "lat": "52.25224715"
+    },
+    {
+      "cityName": "gmina Chodów",
+      "lon": "19.025356193561215",
+      "lat": "52.25224715"
+    },
+    {
+      "cityName": "gmina Chodów",
+      "lon": "19.025356193561215",
+      "lat": "52.25224715"
+    },
+    {
+      "cityName": "gmina Chodów",
+      "lon": "19.025356193561215",
+      "lat": "52.25224715"
+    },
+    {
+      "cityName": "Bauchi",
+      "lon": "9.8454417",
+      "lat": "10.3147618"
+    },
+    {
+      "cityName": "London",
+      "lon": "-0.1276474",
+      "lat": "51.5073219"
+    },
+    {
+      "cityName": "London",
+      "lon": "-0.1276474",
+      "lat": "51.5073219"
+    },
+    {
+      "cityName": "London",
+      "lon": "-0.1276474",
+      "lat": "51.5073219"
+    },
+    {
+      "cityName": "Poland",
+      "lon": "-80.614795",
+      "lat": "41.024226"
+    },
+    {
+      "cityName": "gmina Kiełczygłów",
+      "lon": "18.97548943336966",
+      "lat": "51.2340507"
+    },
+    {
+      "cityName": "gmina Chodów",
+      "lon": "19.025356193561215",
+      "lat": "52.25224715"
+    }
+  ]
+}

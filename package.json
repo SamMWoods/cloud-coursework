@@ -1,0 +1,30 @@
+{
+  "name": "coursework",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ajv": "^8.8.2",
+    "amqplib": "^0.8.0",
+    "axios": "^0.24.0",
+    "express": "^4.17.2",
+    "moment": "^2.29.1",
+    "nodemon": "^2.0.15"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "number.json",
+      "offers.json",
+      "intent.json",
+      "weather.json",
+      "coords.json",
+      "userID.json"
+    ]
+  }
+}
