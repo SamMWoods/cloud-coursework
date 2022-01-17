@@ -1,11 +1,11 @@
 const amqp = require('amqplib/callback_api');
-// const CONN_URL = 'amqps://auerqbem:TPEwUg1r2MJ_jXFfAx6neKIz4v1ZNvD4@rattlesnake.rmq.cloudamqp.com/auerqbem';
-const CONN_URL = 'amqp://student:COMP30231@152.71.155.95';
+const CONN_URL = 'amqps://auerqbem:TPEwUg1r2MJ_jXFfAx6neKIz4v1ZNvD4@rattlesnake.rmq.cloudamqp.com/auerqbem';
+// const CONN_URL = 'amqp://student:COMP30231@152.71.155.95';
 
 let ch = null;
 amqp.connect(CONN_URL, function (error0, conn) {
    if (error0) {
-      console.log('dan1')
+      console.log(error0)
       throw error0;
     }
     conn.createChannel(function(error1, channel) {
