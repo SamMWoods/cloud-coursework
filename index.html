@@ -126,7 +126,12 @@ button#JoinTrip {
 
         async function getJSON(path){
             await(2000)
-            return fetch(`/${path}`)
+            return fetch(`/${path}`, {
+            headers : { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+            })
                 .then((response)=>response.json())
                 .then((responseJson)=>{return responseJson});
         }
