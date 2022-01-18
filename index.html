@@ -125,7 +125,7 @@ button#JoinTrip {
 
 
         async function getJSON(path){
-            await(50000)
+            await(2000)
             return fetch(`/${path}`)
                 .then((response)=>response.json())
                 .then((responseJson)=>{return responseJson});
@@ -174,7 +174,7 @@ button#JoinTrip {
         }
 
         async function APICall(){
-            await sleep(500)
+            await sleep(1000)
             offerData = await this.getJSON("offers");  // command waits until completion
             weatherData = await this.getJSON("weather");  // command waits until completion
             intentData = await this.getJSON("intent");  // command waits until completion
@@ -413,7 +413,6 @@ button#JoinTrip {
         }
  
         async function start(){
-            await sleep(50000)
             await APICall()
             await userID()
             await offerTable() 
