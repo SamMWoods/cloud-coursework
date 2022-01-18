@@ -125,6 +125,7 @@ button#JoinTrip {
 
 
         async function getJSON(path){
+            sleep(10000)
             return fetch(`/${path}`)
                 .then((response)=>response.json())
                 .then((responseJson)=>{return responseJson});
@@ -134,8 +135,6 @@ button#JoinTrip {
             await APICall()
             let city
             coordsData.coords.map((coord => {
-                // console.log(coord.cityName)
-                // console.log(parseInt(coord.lat), parseInt(latitude), parseInt(coord.lon), parseInt(longitude))
                 if(parseInt(coord.lat) == parseInt(latitude) && parseInt(coord.lon) == parseInt(longitude)){
                     city = coord.cityName
                 }
@@ -200,7 +199,7 @@ button#JoinTrip {
                 //tripID
                 var tripIDCell = document.createElement("td");
                 if(offer.creatorUserId === UserIDGlobal.toString()){
-                    var tripIDText = document.createTextNode('User Trip');
+                    var tripIDText = document.createTextNode('Your Trip');
                 }
                 else{
                     var tripIDText = document.createTextNode(offer.tripId);
@@ -361,7 +360,6 @@ button#JoinTrip {
             document.getElementById('JoinTrip').addEventListener('click', async function(e){
                 e.preventDefault()
 
-                // console.log('clicked', e)
                 const tripID = e.target.getAttribute('tripid');
                 const tripCreator = e.target.getAttribute('tripcreator');
 
@@ -386,7 +384,7 @@ button#JoinTrip {
                             
                     });
                     refreshItent()
-                } else if (PassPostCount === 0){
+                } else if (PassPostCount !== -1){
                     alert('Already Joined Trip')
                 }
                 }
