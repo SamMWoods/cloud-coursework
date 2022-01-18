@@ -31,6 +31,22 @@
    "longitude": "12.4829321",
    "latitude": "41.8933203",
    "date": "2022-01-17"
+  },
+  {
+   "creatorUserId": "0c8b",
+   "longitude": "9.8454417",
+   "latitude": "10.3147618",
+   "date": "2022-10-10",
+   "messageId": "8724922",
+   "tripId": "4686043"
+  },
+  {
+   "messageId": "635889",
+   "tripId": "298328",
+   "creatorUserId": "526286",
+   "longitude": "-0.1276474",
+   "latitude": "51.5073219",
+   "date": "2022-01-18"
   }
  ]
 }
