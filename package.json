@@ -7,7 +7,7 @@
     "start": "nodemon index.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Sam Woods",
   "license": "ISC",
   "dependencies": {
     "ajv": "^8.8.2",

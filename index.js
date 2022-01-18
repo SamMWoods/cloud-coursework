@@ -43,35 +43,30 @@ app.get('/offers', async (req, res) => {
   fs.readFile('./offers.json', 'utf-8', function (err, data) {
     return res.json(JSON.parse(data))
   });
-  res.sendStatus(200)
 })
 
 app.get('/weather', async (req, res) => {
   fs.readFile('./weather.json', 'utf-8', function (err, data) {
     return res.json(JSON.parse(data))
   });
-  res.sendStatus(200)
 })
 
 app.get('/intent', async (req, res) => {
   fs.readFile('./intent.json', 'utf-8', function (err, data) {
     return res.json(JSON.parse(data))
   });
-  res.sendStatus(200)
 })
 
 app.get('/coords', async (req, res) => {
   fs.readFile('./coords.json', 'utf-8', function (err, data) {
     return res.json(JSON.parse(data))
   });
-  res.sendStatus(200)
 })
 
 app.get('/userid', async (req, res) => {
   fs.readFile('./userID.json', 'utf-8', function (err, data) {
     return res.json(JSON.parse(data))
   });
-  res.sendStatus(200)
 })
 
 // weather API
@@ -128,8 +123,8 @@ app.post('/schema', async(req, res) => {
       var currentDate = moment().format("YYYY-MM-DD");  
 
       offerSchema = {
-        messageId: Math.floor(Math.random() * 999999),
-        tripId: Math.floor(Math.random() * 999999),
+        messageId: await getNum(),
+        tripId: await getNum(),
         creatorUserId: newUserID.toString(),
         longitude: coords[0],
         latitude: coords[1],
@@ -143,7 +138,7 @@ app.post('/schema', async(req, res) => {
       let intentUserID = req.body.userId
 
       offerSchema = {
-          messageId: Math.floor(Math.random() * 999999),
+          messageId: await getNum(),
           tripId: tripID,
           tripCreatorUserId: CreatorTripUserId,
           userId: intentUserID.toString()
@@ -153,7 +148,8 @@ app.post('/schema', async(req, res) => {
     console.log(offerSchema)
     offerSchema = JSON.stringify(offerSchema)
     await publishToQueue(offerSchema, userInput);
-    res.sendStatus(200)
+    return res.sendStatus(200)
+
 })
 
 async function getNum(){
@@ -265,11 +261,6 @@ async function createNum() {
     if(city !== undefined){
     try {
       const response = await axios.get(`http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${OWMkey}`);
-      console.log(response.data)
-      if(response.data = []){
-        console.log('Please enter vaild London')
-        return
-      } else {
       let coords = {
         cityName: city,
         lon: response.data[0].lon.toString(),
@@ -298,7 +289,6 @@ async function createNum() {
       function errorHandling(error) {
           console.log(error)
       }
-    }
     } catch (error) {
       console.error(error);
     }

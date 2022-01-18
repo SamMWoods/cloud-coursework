@@ -125,13 +125,7 @@ button#JoinTrip {
 
 
         async function getJSON(path){
-            await(2000)
-            await fetch(`/${path}`, {
-            headers : { 
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-            })
+            return fetch(`/${path}`)
                 .then((response)=>response.json())
                 .then((responseJson)=>{return responseJson});
         }
@@ -140,6 +134,8 @@ button#JoinTrip {
             await APICall()
             let city
             coordsData.coords.map((coord => {
+                // console.log(coord.cityName)
+                // console.log(parseInt(coord.lat), parseInt(latitude), parseInt(coord.lon), parseInt(longitude))
                 if(parseInt(coord.lat) == parseInt(latitude) && parseInt(coord.lon) == parseInt(longitude)){
                     city = coord.cityName
                 }
@@ -179,7 +175,7 @@ button#JoinTrip {
         }
 
         async function APICall(){
-            await sleep(1000)
+            await sleep(500)
             offerData = await this.getJSON("offers");  // command waits until completion
             weatherData = await this.getJSON("weather");  // command waits until completion
             intentData = await this.getJSON("intent");  // command waits until completion
@@ -365,6 +361,7 @@ button#JoinTrip {
             document.getElementById('JoinTrip').addEventListener('click', async function(e){
                 e.preventDefault()
 
+                // console.log('clicked', e)
                 const tripID = e.target.getAttribute('tripid');
                 const tripCreator = e.target.getAttribute('tripcreator');
 
@@ -372,6 +369,7 @@ button#JoinTrip {
 
                     
                     var PassPostCount = PassPostID.indexOf(tripID)
+                    console.log(PassPostCount)
                     if(PassPostCount === -1){
                         PassPostID.push(tripID)  
                         await fetch('/schema', {

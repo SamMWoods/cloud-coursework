@@ -1,6 +1,6 @@
 const amqp = require('amqplib/callback_api');
-const CONN_URL = 'amqps://nxwlepfx:4E8Stppg8N5-UhepP2PuTCidUTn9hxy8@crow.rmq.cloudamqp.com/nxwlepfx';
-// const CONN_URL = 'amqp://student:COMP30231@152.71.155.95';
+// const CONN_URL = 'amqps://nxwlepfx:4E8Stppg8N5-UhepP2PuTCidUTn9hxy8@crow.rmq.cloudamqp.com/nxwlepfx';
+const CONN_URL = 'amqp://student:COMP30231@152.71.155.95';
 
 let ch = null;
 amqp.connect(CONN_URL, function (error0, conn) {
