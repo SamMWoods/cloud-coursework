@@ -126,7 +126,7 @@ button#JoinTrip {
 
         async function getJSON(path){
             await(2000)
-            return fetch(`/${path}`, {
+            await fetch(`/${path}`, {
             headers : { 
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
