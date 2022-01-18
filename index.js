@@ -43,30 +43,35 @@ app.get('/offers', async (req, res) => {
   fs.readFile('./offers.json', 'utf-8', function (err, data) {
     return res.json(JSON.parse(data))
   });
+  res.sendStatus(200)
 })
 
 app.get('/weather', async (req, res) => {
   fs.readFile('./weather.json', 'utf-8', function (err, data) {
     return res.json(JSON.parse(data))
   });
+  res.sendStatus(200)
 })
 
 app.get('/intent', async (req, res) => {
   fs.readFile('./intent.json', 'utf-8', function (err, data) {
     return res.json(JSON.parse(data))
   });
+  res.sendStatus(200)
 })
 
 app.get('/coords', async (req, res) => {
   fs.readFile('./coords.json', 'utf-8', function (err, data) {
     return res.json(JSON.parse(data))
   });
+  res.sendStatus(200)
 })
 
 app.get('/userid', async (req, res) => {
   fs.readFile('./userID.json', 'utf-8', function (err, data) {
     return res.json(JSON.parse(data))
   });
+  res.sendStatus(200)
 })
 
 // weather API
@@ -148,8 +153,7 @@ app.post('/schema', async(req, res) => {
     console.log(offerSchema)
     offerSchema = JSON.stringify(offerSchema)
     await publishToQueue(offerSchema, userInput);
-    return res.sendStatus(200)
-
+    res.sendStatus(200)
 })
 
 async function getNum(){
