@@ -125,7 +125,7 @@ button#JoinTrip {
 
 
         async function getJSON(path){
-            sleep(100000)
+            await(50000)
             return fetch(`/${path}`)
                 .then((response)=>response.json())
                 .then((responseJson)=>{return responseJson});
@@ -413,7 +413,7 @@ button#JoinTrip {
         }
  
         async function start(){
-            sleep(50000)
+            await sleep(50000)
             await APICall()
             await userID()
             await offerTable() 
