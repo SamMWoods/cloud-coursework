@@ -123,8 +123,8 @@ app.post('/schema', async(req, res) => {
       var currentDate = moment().format("YYYY-MM-DD");  
 
       offerSchema = {
-        messageId: await getNum(),
-        tripId: await getNum(),
+        messageId: Math.floor(Math.random() * 999999),
+        tripId: Math.floor(Math.random() * 999999),
         creatorUserId: newUserID.toString(),
         longitude: coords[0],
         latitude: coords[1],
@@ -138,7 +138,7 @@ app.post('/schema', async(req, res) => {
       let intentUserID = req.body.userId
 
       offerSchema = {
-          messageId: await getNum(),
+          messageId: Math.floor(Math.random() * 999999),
           tripId: tripID,
           tripCreatorUserId: CreatorTripUserId,
           userId: intentUserID.toString()
@@ -261,6 +261,11 @@ async function createNum() {
     if(city !== undefined){
     try {
       const response = await axios.get(`http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${OWMkey}`);
+      console.log(response.data)
+      if(response.data = []){
+        console.log('Please enter vaild London')
+        return
+      } else {
       let coords = {
         cityName: city,
         lon: response.data[0].lon.toString(),
@@ -289,6 +294,7 @@ async function createNum() {
       function errorHandling(error) {
           console.log(error)
       }
+    }
     } catch (error) {
       console.error(error);
     }
